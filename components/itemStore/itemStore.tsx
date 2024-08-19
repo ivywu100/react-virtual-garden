@@ -1,3 +1,4 @@
+import { useSelectedItem } from "@/hooks/contexts/SelectedItemContext";
 import { ItemSubtype, ItemSubtypes } from "@/models/items/ItemTypes";
 import { Inventory } from "@/models/itemStore/inventory/Inventory";
 import { Store } from "@/models/itemStore/store/Store";
@@ -5,9 +6,10 @@ import { useState } from "react";
 import InventoryItemComponent from "../inventory/inventoryItem";
 import DropdownComponent from "../lists/DropdownComponent";
 
-const ItemStoreComponent = ({itemStore, onInventoryItemClickFunction, costMultiplier}: {itemStore: Store | Inventory, onInventoryItemClickFunction: (arg: any) => void, costMultiplier: number}) => {
+const ItemStoreComponent = ({itemStore, onInventoryItemClickFunction, costMultiplier, maxHeightPercentage}: {itemStore: Store | Inventory, onInventoryItemClickFunction: (arg: any) => void, costMultiplier: number, maxHeightPercentage: number}) => {
 	const [subtypeFilter, setSubtypeFilter] = useState<ItemSubtype | null>(null);
 	const [categoryFilter, setCategoryFilter] = useState<string | null>(null);
+	const {selectedItem, owner} = useSelectedItem();
 
 	const getItemList = () => {
 		if (subtypeFilter && categoryFilter) {
@@ -87,11 +89,13 @@ const ItemStoreComponent = ({itemStore, onInventoryItemClickFunction, costMultip
 	return (<>
 		<div>{RenderSubtypeFilter()}</div>
 		<div>{RenderCategoryFilter()}</div>
+		<div className={`max-h-[${maxHeightPercentage}vh] overflow-y-auto`}>
 		{getItemList().map((item, itemIndex) => (
 			<div key={itemIndex}>
-				<InventoryItemComponent itemStore={itemStore} item={item} onClickFunction={onInventoryItemClickFunction} costMultiplier={costMultiplier}></InventoryItemComponent>
+				<InventoryItemComponent itemStore={itemStore} item={item} onClickFunction={onInventoryItemClickFunction} costMultiplier={costMultiplier} focus={item == selectedItem}></InventoryItemComponent>
 			</div>
 		))}
+		</div>
 		</>
 	);
 }

@@ -81,7 +81,7 @@ export class PlantHistory extends ItemHistory{
 			response.addErrorMessage('Error combining PlantHistory: invalid harvestedQuantity');
 			return response;
 		}
-		if (history.getItemData() !== this.itemData) {
+		if (JSON.stringify(history.getItemData()) != JSON.stringify(this.itemData)) {
 			response.addErrorMessage('Error combining PlantHistory: not identical templates');
 			return response;
 		}

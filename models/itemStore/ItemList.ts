@@ -15,7 +15,11 @@ export class ItemList {
 	static fixedOrder = ['Seed', 'HarvestedItem', 'Blueprint'];
 	constructor(items: InventoryItem[] = []) {
 		this.items = items;
-		this.items.sort((a, b) => {
+		this.sortItems(this.items);
+	}
+
+	private sortItems(list: any[]) {
+		list.sort((a, b) => {
 			const indexA = ItemList.fixedOrder.indexOf(a.itemData.subtype);
 			const indexB = ItemList.fixedOrder.indexOf(b.itemData.subtype);
 	
@@ -118,6 +122,7 @@ export class ItemList {
 			}
 		})
 		// Sort subtypes based on their index in the fixedOrder array
+		// this.sortItems(subtypes);
 		subtypes.sort((a, b) => {
 			const indexA = ItemList.fixedOrder.indexOf(a);
 			const indexB = ItemList.fixedOrder.indexOf(b);
@@ -346,7 +351,8 @@ export class ItemList {
 				return response;
 			}
 			//push to front of list
-			this.items.unshift(newItem);
+			this.items.push(newItem);
+			this.sortItems(this.items);
 			response.payload = newItem;
 			return response;
 		}

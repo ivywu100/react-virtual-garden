@@ -89,7 +89,7 @@ const StoreComponent = ({onInventoryItemClickFunction}: {onInventoryItemClickFun
 		<div className="w-[80%]">
 			<div className="font-bold text-3xl">{store.getStoreName()}</div>
 			<div>{RenderStoreDiscountString()}</div>
-			<ItemStoreComponent itemStore={store} onInventoryItemClickFunction={onInventoryItemClickFunction} costMultiplier={store.getBuyMultiplier()}/>
+			<ItemStoreComponent itemStore={store} onInventoryItemClickFunction={onInventoryItemClickFunction} costMultiplier={store.getBuyMultiplier()} maxHeightPercentage={60}/>
 			<div>
 				<div className="mt-2 text-sm text-gray-600">
 					{canRestock ? 'Store is fully stocked' : `Restock in: ${Math.ceil(timeRemaining / 1000)}s`}

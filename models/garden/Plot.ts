@@ -137,12 +137,12 @@ export class Plot {
 		if (currentTime > plantedTime + item.itemData.growTime * 1000) {
 			return "Ready to harvest!";
 		}
-		const remainingTime = Math.floor((plantedTime + item.itemData.growTime * 1000 - currentTime) / 1000);
+		const remainingTime = Math.min(item.itemData.growTime, Math.max(1, Math.round((plantedTime + item.itemData.growTime * 1000 - currentTime) / 1000)));
 		// Calculate days, hours, minutes, and seconds
-		const remainingDays = Math.floor(remainingTime / (24 * 3600));
-		const remainingHours = Math.floor((remainingTime % (24 * 3600)) / 3600);
-		const remainingMinutes = Math.floor((remainingTime % 3600) / 60);
-		const remainingSeconds = Math.floor(remainingTime % 60);
+		const remainingDays = Math.round(remainingTime / (24 * 3600));
+		const remainingHours = Math.round((remainingTime % (24 * 3600)) / 3600);
+		const remainingMinutes = Math.round((remainingTime % 3600) / 60);
+		const remainingSeconds = Math.round(remainingTime % 60);
 
 		// Format components with leading zeros
 		const formattedDays = remainingDays.toString();
@@ -319,7 +319,7 @@ export class Plot {
 		const plant = this.item as Plant;
 		const timeElapsed = currentTime - this.plantTime;
 		if (!instantHarvest && timeElapsed < plant.itemData.growTime * 1000) {
-			response.addErrorMessage(`Error: Plant is not ready to harvest. Needs ${plant.itemData.growTime - Math.floor(timeElapsed / 1000)} more seconds.`);
+			response.addErrorMessage(`Error: Plant is not ready to harvest. Needs ${plant.itemData.growTime - Math.round(timeElapsed / 1000)} more seconds.`);
 			return response;
 		}
 		return this.pickupItem(inventory, updatedItem);

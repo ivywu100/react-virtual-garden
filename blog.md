@@ -193,6 +193,13 @@
   * Actionhistory, Itemhistory
   * IconSelector only displays icons for items that you have harvested before
 
+### UI Changes
+
+  * Selected item in inventory is now highlighted
+  * Plot tooltips now only display numbers between 1 and growtime, causing lag at the start but finishing at 1s
+  * Inventory cuts off at 60% of viewport height, and allows scrolling
+  * Added more colors for tailwind
+
 TODO:
 
 Change mouseover color for inventoryItems

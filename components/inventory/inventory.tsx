@@ -11,7 +11,7 @@ const InventoryComponent = ({onInventoryItemClickFunction, costMultiplier}: {onI
 		<div className="text-black w-full">
 			<div>{user.getUsername()}{"'s Inventory"}</div>
 			<div data-testid="current-gold">Gold: {inventory.getGold()}</div>
-			<ItemStoreComponent itemStore={inventory} onInventoryItemClickFunction={onInventoryItemClickFunction} costMultiplier={costMultiplier}/>
+			<ItemStoreComponent itemStore={inventory} onInventoryItemClickFunction={onInventoryItemClickFunction} costMultiplier={costMultiplier} maxHeightPercentage={60}/>
 		</div>
 		</>
 	);

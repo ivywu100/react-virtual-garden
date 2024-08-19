@@ -30,15 +30,15 @@ const PlotComponent = forwardRef<PlotComponentRef, PlotComponentProps>(({plot, o
 			const plant = plot.getItem() as Plant;
 			const timeElapsed = Date.now() - plot.getPlantTime();
 			if (plant.itemData.growTime * 1000 <= timeElapsed) {
-				return `bg-green-500 border ${colors.plant.grownBorderColor}`;
+				return `bg-apple-500 border ${colors.plant.grownBorderColor}`;
 			} else if (plant.itemData.growTime * 3/4 * 1000 <= timeElapsed) {
-				return `bg-green-400 border ${colors.plant.defaultBorderColor}`;
+				return `bg-apple-400 border ${colors.plant.defaultBorderColor}`;
 			} else if (plant.itemData.growTime/2 * 1000 <= timeElapsed) {
-				return `bg-green-300 border ${colors.plant.defaultBorderColor}`;
+				return `bg-apple-300 border ${colors.plant.defaultBorderColor}`;
 			} else if (plant.itemData.growTime * 1/4 * 1000 <= timeElapsed) {
-				return `bg-green-200 border ${colors.plant.defaultBorderColor}`;
+				return `bg-apple-200 border ${colors.plant.defaultBorderColor}`;
 			} else {
-				return `bg-green-100 border ${colors.plant.defaultBorderColor}`;
+				return `bg-apple-100 border ${colors.plant.defaultBorderColor}`;
 			}
 
 		} else if (plot.getItemSubtype() === ItemSubtypes.DECORATION.name) {

@@ -1,7 +1,7 @@
 const colors = {
 
 	plant: {
-		plotBackgroundColor: "bg-green-400", //unused, plots have a scaling green based on growtime
+		plotBackgroundColor: "bg-apple-400", //unused, plots have a scaling green based on growtime
 		defaultBorderColor: "border-reno-sand-700",
 		grownBorderColor: "border-2 border-yellow-500",
 		plotTooltipBackground: "bg-green-400 border-2 border-reno-sand-700",
@@ -63,7 +63,8 @@ const colors = {
 		inventoryDefaultItemTextColor: "text-coffee-800",
 		inventoryHighPrice: "text-green-300",
 		inventoryRegularPrice: "text-coffee-800",
-		inventoryLowPrice: "text-green-300"
+		inventoryLowPrice: "text-green-300",
+		inventoryItemBorderColor: "border-apple-600"
 	},
 	
 }
