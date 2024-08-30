@@ -1,4 +1,4 @@
-import {cypressFailFast} from 'cypress-fail-fast';
+import cypressFailFast from "cypress-fail-fast/plugin";
 import { defineConfig } from 'cypress'
 
 export default defineConfig({
