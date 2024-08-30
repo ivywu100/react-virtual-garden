@@ -1,7 +1,7 @@
-import cypressFailFast from "cypress-fail-fast/plugin";
-const { defineConfig } = require("cypress");
+import {cypressFailFast} from 'cypress-fail-fast';
+import { defineConfig } from 'cypress'
 
-module.exports = defineConfig({
+export default defineConfig({
   e2e: {
     numTestsKeptInMemory: 100,
     watchForFileChanges: false,

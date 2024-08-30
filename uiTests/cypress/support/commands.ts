@@ -1,4 +1,4 @@
-Cypress.Commands.add("visitGarden", () => {
+Cypress.Commands.add('visitGarden', () => {
   cy.clearAllLocalStorage();
   cy.visit("http://localhost:3000/garden");
   cy.wait(2000);

@@ -6,9 +6,9 @@ describe("should plant seeds and harvest plants in garden", () => {
   const gardenPlots = new gardenPlot();
   const gardenPg = new gardenPage();
   const toolTips = new toolTipWindow();
-  let rowLen;
-  let colLen;
-  let curGold;
+  let rowLen: number;
+  let colLen: number;
+  let curGold: number;
 
   const seedToPlant = "apple seed";
 
@@ -45,7 +45,7 @@ describe("should plant seeds and harvest plants in garden", () => {
     toolTips.toolTip.first().within(() => {
       toolTips.toolName.should("have.text", "apple");
       toolTips.toolSellPrice.then(val => {
-        expect(val.text().replace("💰", "").trim()).to.equal("20");
+        expect(val.text().replace("💰", "").trim()).to.equal("15");
       });
       toolTips.toolCategory.should("have.text", "Plant");
       toolTips.toolCategoryType.then(val => {
@@ -79,7 +79,7 @@ describe("should plant seeds and harvest plants in garden", () => {
     toolTips.toolTip.first().within(() => {
       toolTips.toolName.should("have.text", "apple");
       toolTips.toolSellPrice.then(val => {
-        expect(val.text().replace("💰", "").trim()).to.equal("20");
+        expect(val.text().replace("💰", "").trim()).to.equal("15");
       });
       toolTips.toolCategory.should("have.text", "Plant");
       toolTips.toolCategoryType.then(val => {

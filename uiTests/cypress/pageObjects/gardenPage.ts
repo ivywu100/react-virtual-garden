@@ -56,7 +56,7 @@ export class gardenPage {
     return cy.get(this.currentGoldSelector);
   }
 
-  findInventoryQty(item) {
+  findInventoryQty(item: string) {
     return this.userInventorySection
       .contains(item)
       .parent()
