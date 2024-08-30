@@ -42,23 +42,18 @@ const IconSelector = ({ iconIndex, onIconChange }: {iconIndex: string, onIconCha
 
     const RenderIconChoices = () => {
         const iconSet: Icon[] = [];
+
         if (!categoryFilter || categoryFilter === '') {
             iconRepository.getIconCategories().map((categoryName) => {
                 availableIcons[categoryName].map((iconOption) => {
-                    const template = placeholderItemTemplates.getPlacedItemTemplateByName(iconOption.getName());
-                    if (!template) return;
-                    const itemAvailable = user.getItemHistory().contains(template);
-                    if (itemAvailable.payload) {
+                    if(user.isIconUnlocked(iconOption)) {
                         iconSet.push(iconOption);
                     }
                 })
             });
         } else {
             availableIcons[categoryFilter].map((iconOption) => {
-                const template = placeholderItemTemplates.getPlacedItemTemplateByName(iconOption.getName());
-                if (!template) return;
-                const itemAvailable = user.getItemHistory().contains(template);
-                if (itemAvailable.payload) {
+                if(user.isIconUnlocked(iconOption)) {
                     iconSet.push(iconOption);
                 }
             });
@@ -70,17 +65,17 @@ const IconSelector = ({ iconIndex, onIconChange }: {iconIndex: string, onIconCha
             chunkedIcons.push(iconSet.slice(i, i + 5));
         }
 
-        // return (<>
-        // {iconSet.map((iconOption) => (
-        //     <button key={iconOption.getName()} onClick={() => onIconClick(iconOption)}>
-        //         <span>{iconRepository.getIconByName(iconOption.getName())}</span>
-        //     </button>
-        // ))}</>);
+        if (chunkedIcons.length === 0) {
+            return <div className="max-h-[60vh] overflow-y-auto">
+                No icons found. Try another category!
+            </div>;
+        }
+
         return <div className="max-h-[60vh] overflow-y-auto">
             {chunkedIcons.map((iconGroup, index) => (
             <div key={index} className="flex flex-row mx-4 my-4"> {/* Flexbox for horizontal alignment */}
               {iconGroup.map((iconOption) => (
-                <IconButton key={iconOption.getName()} icon={iconOption.getName()} onClickFunction={() => onIconClick(iconOption)} size={"text-8xl"}/>
+                <IconButton key={iconOption.getName()} icon={iconOption.getName()} onClickFunction={() => onIconClick(iconOption)} borderColor={`coffee-700`} size={"text-8xl"}/>
               ))}
             </div>
           ))}
@@ -90,12 +85,13 @@ const IconSelector = ({ iconIndex, onIconChange }: {iconIndex: string, onIconCha
     
 	return (
         <span className="icon-selector">
-            <IconButton icon={iconIndex} onClickFunction={showAllIconsWindow} size={"text-4xl"}/>
+            <IconButton icon={iconIndex} onClickFunction={showAllIconsWindow} borderColor={`coffee-700`} size={"text-4xl"}/>
             {/* <button onClick={showAllIconsWindow} className="px-1 py-1 border border-2 border-coffee-700 align-text-bottom text-center bg-gray-300 min-w-12 min-h-12 text-3xl text-purple-600 font-semibold rounded-lg" >{iconRepository.getIconByName(iconIndex)}</button> */}
             <PopupWindow showWindow={showAllIcons} setShowWindow={setShowAllIcons}>
                 <div className="w-max bg-reno-sand-200 text-black p-8 rounded-lg shadow-md justify-between items-center">
                     <div className="text-2xl text-semibold"> Select a new icon: </div>
-                    <div className="text-xl mb-4">{RenderCategoryFilter()}</div>
+                    <div className="text-xl mb-2">{RenderCategoryFilter()}</div>
+                    <div className="text-sm mb-4">Plant crops or place decorations to unlock new icons.</div>
                     {RenderIconChoices()}
                     </div>
             </PopupWindow>

@@ -65,8 +65,6 @@ export abstract class PlacedItem extends Item {
 	}
 
 	/**
-	 * Consumes the specified item.
-	 * Sets the status message to "removed".
 	 * Performs a specific action depending on the item type:
 	 * Decoration -> returns the Blueprint ItemTemplate corresponding to the Decoration
 	 * Plant -> returns the HarvestedItem ItemTemplate corresponding to the Plant
@@ -84,7 +82,7 @@ export abstract class PlacedItem extends Item {
 					originalItem: this,
 					newTemplate: placeholderItemTemplates.getInventoryTemplate(this.itemData.transformId),
 				};
-				this.setStatus('removed');
+				// this.setStatus('removed');
 				break;
 			default:
 				response.addErrorMessage(`item is of type ${this.itemData.subtype}, cannot be used`);

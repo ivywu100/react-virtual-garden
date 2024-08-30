@@ -1,12 +1,14 @@
 import { useUser } from "@/hooks/contexts/UserContext";
-import { iconRepository } from "@/models/user/icons/IconRepository";
-import { useRef, useState, useEffect } from "react";
+import { useState } from "react";
 import colors from "../colors/colors";
+import GardenDebugOptions from "../developer/GardenDebugOptions";
 import LevelSystemComponent from "../level/LevelSystem";
 import IconDisplay from "../user/icon/IconDisplay";
 
 const UserProfileComponent = () => {
 	const { user } = useUser();
+
+	const [showDebugOptions, setShowDebugOptions] = useState(0);
 
 	const getUsernameFontSize = () => {
 		if (user.getUsername().length > 20) {
@@ -21,12 +23,21 @@ const UserProfileComponent = () => {
 		return 'text-3xl';
 	}
 
+	const handleDebugOptionEnable = () => {
+		setShowDebugOptions((showDebugOptions) => showDebugOptions + 1);
+	}
+
 	return <>
 	<div className="flex flex-row items-center justify-center">
-		<IconDisplay icon={user.getIcon()} size={"text-4xl"}/>
+		<button onClick={handleDebugOptionEnable}>
+			<IconDisplay icon={user.getIcon()} borderColor={`coffee-700`} size={"text-4xl"}/>
+		</button>
 		<span className={`ml-4 ${getUsernameFontSize()} ${colors.user.usernameTextColor}`}>{user.getUsername()}</span>
 	</div>
 	<div className="mx-4 my-4"><LevelSystemComponent level={user.getLevel()} currentExp={user.getCurrentExp()} expToLevelUp={user.getExpToLevelUp()} /></div>
+	<div className={`${showDebugOptions >= 30 ? `` : `hidden`}`}>
+		<GardenDebugOptions/>
+	</div>
 	</>
 }
 

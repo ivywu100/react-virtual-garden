@@ -4,9 +4,11 @@ import IconSelector from "@/components/user/icon/IconSelector";
 import UsernameDisplay from "@/components/user/UsernameDisplay";
 import UserStats from "@/components/user/UserStats";
 import { useUser } from "@/hooks/contexts/UserContext";
+import { useEffect, useState } from "react";
 
 const UserPage = () => {
-  function RenderUser() {
+  
+  const  RenderUser = () => {
     const {user, username, handleChangeUsername, icon, handleChangeIcon} = useUser();
 
     if (!user) {
@@ -24,7 +26,7 @@ const UserPage = () => {
             <div className="mx-4 my-4">
               <LevelSystemComponent level={user.getLevel()} currentExp={user.getCurrentExp()} expToLevelUp={user.getExpToLevelUp()} />
             </div>
-            <div>Friends list goes here!</div>
+            <div>Friends List goes here!</div>
           </div>
 
           <div className={`w-2/3`}>

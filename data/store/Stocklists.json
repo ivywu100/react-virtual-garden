@@ -1,0 +1,62 @@
+{
+	"Stocklists": [
+			{
+				"id": "0",
+				"name": "Default Stocklist",
+				"items": [
+					{
+						"name": "yellow onion seed",
+						"quantity": 25
+					},
+					{
+						"name": "garlic seed",
+						"quantity": 25
+					},
+					{
+						"name": "apple seed",
+						"quantity": 100
+					},
+					{
+						"name": "cherry seed",
+						"quantity": 25
+					},
+					{
+						"name": "peach seed",
+						"quantity": 25
+					},
+					{
+						"name": "mango seed",
+						"quantity": 25
+					},
+					{
+						"name": "magic mango seed",
+						"quantity": 2
+					},
+					{
+						"name": "banana seed",
+						"quantity": 50
+					},
+					{
+						"name": "coconut seed",
+						"quantity": 25
+					},
+					{
+						"name": "bench blueprint",
+						"quantity": 5
+					},
+					{
+						"name": "flamingo blueprint",
+						"quantity": 2
+					},
+					{
+						"name": "construction sign blueprint",
+						"quantity": 5
+					},
+					{
+						"name": "potted plant blueprint",
+						"quantity": 5
+					}
+				]
+			}
+	]
+}

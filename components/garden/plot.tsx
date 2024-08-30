@@ -29,13 +29,15 @@ const PlotComponent = forwardRef<PlotComponentRef, PlotComponentProps>(({plot, o
 		} else if (plot.getItemSubtype() === ItemSubtypes.PLANT.name) {
 			const plant = plot.getItem() as Plant;
 			const timeElapsed = Date.now() - plot.getPlantTime();
-			if (plant.itemData.growTime * 1000 <= timeElapsed) {
+			const growTime = plot.getTotalGrowTime();
+			// const growTime = plant.itemData.growTime;
+			if (growTime * 1000 <= timeElapsed) {
 				return `bg-apple-500 border ${colors.plant.grownBorderColor}`;
-			} else if (plant.itemData.growTime * 3/4 * 1000 <= timeElapsed) {
+			} else if (growTime * 3/4 * 1000 <= timeElapsed) {
 				return `bg-apple-400 border ${colors.plant.defaultBorderColor}`;
-			} else if (plant.itemData.growTime/2 * 1000 <= timeElapsed) {
+			} else if (growTime/2 * 1000 <= timeElapsed) {
 				return `bg-apple-300 border ${colors.plant.defaultBorderColor}`;
-			} else if (plant.itemData.growTime * 1/4 * 1000 <= timeElapsed) {
+			} else if (growTime * 1/4 * 1000 <= timeElapsed) {
 				return `bg-apple-200 border ${colors.plant.defaultBorderColor}`;
 			} else {
 				return `bg-apple-100 border ${colors.plant.defaultBorderColor}`;

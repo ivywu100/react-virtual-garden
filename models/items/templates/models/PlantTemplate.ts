@@ -5,15 +5,19 @@ import { PlacedItemTemplate } from "./PlacedItemTemplate";
 export class PlantTemplate extends PlacedItemTemplate{
 	baseExp: number;
 	growTime: number;
+	repeatedGrowTime: number;
+	numHarvests: number;
 	
-	constructor(id: string, name: string, icon: string, type: ItemType, subtype: ItemSubtype, category: string, description: string, value: number, transformId: string, baseExp: number, growTime: number) {
+	constructor(id: string, name: string, icon: string, type: ItemType, subtype: ItemSubtype, category: string, description: string, value: number, transformId: string, baseExp: number, growTime: number, repeatedGrowTime: number, numHarvests: number) {
 		super(id, name, icon, type, subtype, category, description, value, transformId);
 		this.baseExp = baseExp;
 		this.growTime = growTime;
+		this.repeatedGrowTime = repeatedGrowTime;
+		this.numHarvests = numHarvests;
 	}
 
 	static getErrorTemplate() {
-		return new PlantTemplate("0-02-99-99-99", "error", "❌", "PlacedItem", "Plant", "Error", "Error", 0, "1-03-99-99-99", 0, 0);
+		return new PlantTemplate("0-02-99-99-99", "error", "❌", "PlacedItem", "Plant", "Error", "Error", 0, "1-03-99-99-99", 0, 0, 0, 1);
 	}
 
 	static fromPlainObject(plainObject: any): PlantTemplate {
@@ -36,7 +40,7 @@ export class PlantTemplate extends PlacedItemTemplate{
 					throw new Error('Found non Plant for Plant template');
 				}
 				const typedTemplate = template as PlantTemplate;
-				return new PlantTemplate(typedTemplate.id, typedTemplate.name, typedTemplate.icon, typedTemplate.type, typedTemplate.subtype, typedTemplate.category, typedTemplate.description, typedTemplate.value, typedTemplate.transformId, typedTemplate.baseExp, typedTemplate.growTime);
+				return new PlantTemplate(typedTemplate.id, typedTemplate.name, typedTemplate.icon, typedTemplate.type, typedTemplate.subtype, typedTemplate.category, typedTemplate.description, typedTemplate.value, typedTemplate.transformId, typedTemplate.baseExp, typedTemplate.growTime, typedTemplate.repeatedGrowTime, typedTemplate.numHarvests);
 			}
 			if (typeof name !== 'string') {
 				throw new Error('Invalid name property in plainObject for PlantTemplate');
@@ -55,7 +59,7 @@ export class PlantTemplate extends PlacedItemTemplate{
 					throw new Error('Found non plant for Plant template');
 				}
 				const typedTemplate = template as PlantTemplate;
-				return new PlantTemplate(typedTemplate.id, typedTemplate.name, typedTemplate.icon, typedTemplate.type, typedTemplate.subtype, typedTemplate.category, typedTemplate.description, typedTemplate.value, typedTemplate.transformId, typedTemplate.baseExp, typedTemplate.growTime);
+				return new PlantTemplate(typedTemplate.id, typedTemplate.name, typedTemplate.icon, typedTemplate.type, typedTemplate.subtype, typedTemplate.category, typedTemplate.description, typedTemplate.value, typedTemplate.transformId, typedTemplate.baseExp, typedTemplate.growTime, typedTemplate.repeatedGrowTime, typedTemplate.numHarvests);
 			}
 			throw new Error('Could not find valid id or name for PlantTemplate');
 		} catch (err) {

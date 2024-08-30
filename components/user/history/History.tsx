@@ -5,13 +5,10 @@ const HistoryComponent = ({}) => {
 
 	return <>
 		<div>
-			This is the history component!
+			<ActionHistoryListComponent/>
 		</div>
 		<div>
-		<ActionHistoryListComponent/>
-		</div>
-		<div>
-		<ItemHistoryListComponent/>
+			<ItemHistoryListComponent/>
 		</div>
 	</>
 }

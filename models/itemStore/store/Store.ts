@@ -4,6 +4,8 @@ import { ItemStore } from "../ItemStore";
 import { Inventory } from "../inventory/Inventory";
 import { InventoryTransactionResponse } from "../inventory/InventoryTransactionResponse";
 import { ItemTemplate } from "@/models/items/templates/models/ItemTemplate";
+import { storeRepository } from "./StoreRepository";
+import { stocklistRepository } from "./StocklistRepository";
 
 export class Store extends ItemStore {
 	private id: number;
@@ -38,14 +40,10 @@ export class Store extends ItemStore {
 		}
 		// Initialize default values
 		let id = 0;
-		let storeName = '';
-		let buyMultiplier = 2;
-		let sellMultiplier = 1;
-		let upgradeMultiplier = 1;
+		let storeName = 'Default Store';
 		let items = new ItemList();
-		let stockList = new ItemList();
+		// let stockList = new ItemList();
 		let restockTime = Date.now();
-		let restockInterval = 60000;
 	
 		// Validate and assign id
 		if (plainObject && typeof plainObject.id === 'number') {
@@ -57,59 +55,53 @@ export class Store extends ItemStore {
 			storeName = plainObject.storeName;
 		}
 	
-		// Validate and assign buyMultiplier
-		if (plainObject && typeof plainObject.buyMultiplier === 'number') {
-			buyMultiplier = plainObject.buyMultiplier;
-		}
-	
-		// Validate and assign sellMultiplier
-		if (plainObject && typeof plainObject.sellMultiplier === 'number') {
-			sellMultiplier = plainObject.sellMultiplier;
-		}
-	
-		// Validate and assign upgradeMultiplier
-		if (plainObject && typeof plainObject.upgradeMultiplier === 'number') {
-			upgradeMultiplier = plainObject.upgradeMultiplier;
-		}
-	
 		// Validate and assign items
 		if (plainObject && plainObject.items !== undefined) {
 			if (typeof plainObject.items === 'object' && plainObject.items !== null) {
 				items = ItemList.fromPlainObject(plainObject.items) || new ItemList();
 			}
 		}
-	
-		// Validate and assign stockList
-		if (plainObject && plainObject.stockList !== undefined) {
-			if (typeof plainObject.stockList === 'object' && plainObject.stockList !== null) {
-				stockList = ItemList.fromPlainObject(plainObject.stockList) || new ItemList();
+
+		//get stocklist from database
+
+		//first, get store data
+		let storeInterface = storeRepository.getStoreInterfaceById(id);
+		if (!storeInterface) {
+			storeInterface = storeRepository.getStoreInterfaceByName(storeName);
+			if (!storeInterface) {
+				storeInterface = storeRepository.getStoreInterfaceById(0);
+				if (!storeInterface) {
+					//hardcoded initial values if store with id 0 doesn't show up
+					storeInterface = {id: id, name: storeName, stocklistId: "0", stocklistName: "Default Stocklist", buyMultiplier: 2, sellMultiplier: 1, upgradeMultiplier: 1, restockInterval: 300000};
+				}
 			}
+		}
+
+		//then get stocklist data
+		let stocklistInterface = stocklistRepository.getStocklistInterfaceById(storeInterface.stocklistId);
+		let stocklistItems = new ItemList();
+		if (!stocklistInterface) {
+			stocklistInterface = stocklistRepository.getStocklistInterfaceByName(storeInterface.stocklistName);
+		}
+		if (stocklistInterface) {
+			stocklistItems = stocklistInterface.items;
 		}
 
 		// Validate and assign restockTime
 		if (plainObject && typeof plainObject.restockTime === 'number') {
 			restockTime = plainObject.restockTime;
 		}
-
-		// Validate and assign restockInterval
-		if (plainObject && typeof plainObject.restockInterval === 'number') {
-			restockInterval = plainObject.restockInterval;
-		}
 	
-		return new Store(id, storeName, buyMultiplier, sellMultiplier, upgradeMultiplier, items, stockList, restockTime, restockInterval);
+		return new Store(id, storeName, storeInterface.buyMultiplier, storeInterface.sellMultiplier, storeInterface.upgradeMultiplier, items, stocklistItems, restockTime, storeInterface.restockInterval);
 	}
 
 	toPlainObject(): any {
 		return {
 			id: this.id,
 			storeName: this.storeName,
-			buyMultiplier: this.buyMultiplier,
-			sellMultiplier: this.sellMultiplier,
-			upgradeMultiplier: this.upgradeMultiplier,
-			stockList: this.stockList.toPlainObject(), // Convert stockList to plain object
+			// stockList: this.stockList.toPlainObject(), // We do not save stocklist, it is grabbed from database
 			items: this.items.toPlainObject(), // Convert items to plain object
 			restockTime: this.restockTime,
-			restockInterval: this.restockInterval,
 		};
 	} 
 

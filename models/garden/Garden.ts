@@ -113,7 +113,7 @@ export class Garden {
      */
 	static generateEmptyPlot(rowIndex: number, colIndex: number): Plot {
 		const ground = generateNewPlaceholderPlacedItem("ground", "empty");
-		const newPlot = new Plot(ground, Date.now());
+		const newPlot = new Plot(ground, Date.now(), 0);
 		return newPlot;
 	}
 
@@ -330,7 +330,7 @@ export class Garden {
 	 */
 	private replaceItemInPlot(plot: Plot, replacementItem: PlacedItem): GardenTransactionResponse {
 		const response = new GardenTransactionResponse();
-		const useItemResponse = plot.useItem(replacementItem);
+		const useItemResponse = plot.useItem(replacementItem, plot.getUsesRemaining());
 		if (!useItemResponse.isSuccessful()) return useItemResponse;
 
 		response.payload = {

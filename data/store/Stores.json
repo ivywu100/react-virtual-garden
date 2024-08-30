@@ -1,0 +1,14 @@
+{
+	"Stores": [
+			{
+				"id": 0,
+				"name": "Default Store",
+				"stocklistId": "0",
+				"stocklistName": "Default Stocklist",
+				"buyMultiplier": 2,
+				"sellMultiplier": 1,
+				"upgradeMultiplier": 1,
+				"restockInterval": 300000
+			}
+	]
+}

@@ -12,6 +12,8 @@ interface GardenProviderProps {
 export const GardenProvider = ({ children }: GardenProviderProps) => {
     const [garden, setGarden] = useState<Garden | null>(null);
 	const [gardenMessage, setGardenMessage] = useState('');
+	const [instantGrow, setInstantGrow] = useState(false);
+	const [gardenForceRefreshKey, setGardenForceRefreshKey] = useState(0);
 
 	function setupGarden(userId: string): Garden {
 		let garden = loadGarden();
@@ -37,8 +39,26 @@ export const GardenProvider = ({ children }: GardenProviderProps) => {
 		console.log('finished reset');
 	  }
 
+	function toggleInstantGrow() {
+		//Yes this is reversed, because instantGrow hasn't updated until the next render
+		setGardenMessage(`instant grow is now: ${!instantGrow ? `on` : `off`}`);
+		setInstantGrow((instantGrow) => !instantGrow);
+	}
+
+	const updateGardenForceRefreshKey = () => {
+		setGardenForceRefreshKey((gardenForceRefreshKey) => gardenForceRefreshKey + 1);
+	}
+
     return (
-        <GardenContext.Provider value={{ garden: garden!, resetGarden, gardenMessage, setGardenMessage }}>
+        <GardenContext.Provider value={
+			{ garden: garden!, 
+			resetGarden, 
+			gardenMessage, 
+			setGardenMessage, 
+			instantGrow, 
+			toggleInstantGrow,
+			gardenForceRefreshKey,
+			updateGardenForceRefreshKey  }}>
             {children}
         </GardenContext.Provider>
     );

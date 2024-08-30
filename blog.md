@@ -199,28 +199,46 @@
   * Plot tooltips now only display numbers between 1 and growtime, causing lag at the start but finishing at 1s
   * Inventory cuts off at 60% of viewport height, and allows scrolling
   * Added more colors for tailwind
+  * Removed debug options from main screen, now only accesible by clicking profile image 30 times
+  * Moved garden expansion options into hidden folder, and gave them tooltips
+  * Garden expansion options are disabled if too large/small
+
+## Day 17
+
+### Store update
+
+  * New store.json and stocklist.json data files
+  * Stores now grab stocklist from data files, so they will update instantly
+  * Allows for future expansions of additional store types
+  * Changed some text colors
+
+### User Icon Selection now depends on plants/decorations harvested/placed
+
+### Added multiple harvests to certain plants
+
+  * Right now initial harvest takes growTime, then subsequent harvests take growTime/2
+  * Eventually will change to have specific timers
+  * Need to work out a way to better display this information
+
+## Day 18
+
+### Looking into how to host external database and poll user data from there
+
+  * Added some test files for querying from local postgres db
+  * Not pushing .env, some things will break if forked
+
 
 TODO:
 
 Change mouseover color for inventoryItems
 
-Filter inventory - sort inventory by alphabet, price, category
-
 Use redux for state management
-
-Add selected indicator and/or make plots show what is going to be planted/placed
-
-To get stores to autoupdate, have to store store information in a json file and pull from it for the stocklist/itemlist without destroying the existing items
-
-Change grow time to say minutes/hours if more than 60s remaining
 
 Generate multiple store types/switch between stores/restock store
 Clean up ui, especially font/scaling using rem, to accommodate more screen width
 Trade Window Multiselect + Total
 
 Make Garden more interactive than plant all -> harvest 
-
-Add User class
 
 Add level requirement to plants/seeds
 
@@ -237,8 +255,6 @@ Change plant categories to better reflect common terms
 Make store not able to delete items, even if they drop to 0 quantity, and modify display to say out of stock
 
 Add toolkit - select (plant, harvest, pickup, place); delete (only in progress plants)
-
-Store sells seeds for base price, not 2x (?), or just make it more clear what the profit margin is
 
 Daily login bonus to prevent softlock - gives some money and a random assortment of seeds that add up to some value
 
@@ -258,3 +274,4 @@ Or don't allow buying expansions/limit it per level
 Add random events/natural disasters that interact with decorations ie. scarecrows, fences
 Small, medium, large stores with different restock intervals and stock limits
 Item metadata migration tool
+Dev/Prod external dbs, and dev/prod branches

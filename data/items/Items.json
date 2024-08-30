@@ -25,7 +25,9 @@
 				"value": 30,
 				"transformId": "1-03-01-06-00",
 				"baseExp": 9, 
-				"growTime": 900
+				"growTime": 900,
+				"repeatedGrowTime": 450,
+				"numHarvests": 1
 			},
 			{
 				"id": "0-02-01-01-00",
@@ -38,7 +40,9 @@
 				"value": 15,
 				"transformId": "1-03-01-01-00",
 				"baseExp": 18, 
-				"growTime": 900
+				"growTime": 900,
+				"repeatedGrowTime": 450,
+				"numHarvests": 1
 			},
 			{
 				"id": "0-02-09-01-00",
@@ -48,10 +52,12 @@
 				"subtype": "Plant",
 				"category": "Tree Fruit",
 				"description": "Error",
-				"value": 10,
+				"value": 5,
 				"transformId": "1-03-09-01-00",
 				"baseExp": 2, 
-				"growTime": 30
+				"growTime": 10,
+				"repeatedGrowTime": 5,
+				"numHarvests": 1
 			},
 			{
 				"id": "0-02-09-02-00",
@@ -64,7 +70,9 @@
 				"value": 60,
 				"transformId": "1-03-09-02-00",
 				"baseExp": 20, 
-				"growTime": 3600
+				"growTime": 3600,
+				"repeatedGrowTime": 1800,
+				"numHarvests": 1
 			},
 			{
 				"id": "0-02-09-03-00",
@@ -77,7 +85,9 @@
 				"value": 80,
 				"transformId": "1-03-09-03-00",
 				"baseExp": 25, 
-				"growTime": 7200
+				"growTime": 7200,
+				"repeatedGrowTime": 3600,
+				"numHarvests": 1
 			},
 			{
 				"id": "0-02-10-01-00",
@@ -90,7 +100,9 @@
 				"value": 15,
 				"transformId": "1-03-10-01-00",
 				"baseExp": 4, 
-				"growTime": 180
+				"growTime": 180,
+				"repeatedGrowTime": 90,
+				"numHarvests": 3
 			},
 			{
 				"id": "0-02-10-02-00",
@@ -103,7 +115,9 @@
 				"value": 200,
 				"transformId": "1-03-10-02-00",
 				"baseExp": 50, 
-				"growTime": 21600
+				"growTime": 21600,
+				"repeatedGrowTime": 10800,
+				"numHarvests": 1
 			},
 			{
 				"id": "0-02-10-03-00",
@@ -116,7 +130,9 @@
 				"value": 120,
 				"transformId": "1-03-10-03-00",
 				"baseExp": 30, 
-				"growTime": 10800
+				"growTime": 10800,
+				"repeatedGrowTime": 5400,
+				"numHarvests": 1
 			},
 			{
 				"id": "0-02-10-03-03",
@@ -129,7 +145,9 @@
 				"value": 1200,
 				"transformId": "1-03-10-03-03",
 				"baseExp": 300, 
-				"growTime": 108000
+				"growTime": 108000,
+				"repeatedGrowTime": 54000,
+				"numHarvests": 10
 			}
 		],
 		"Decorations": [
@@ -176,6 +194,17 @@
 				"description": "Error",
 				"value": 25,
 				"transformId": "1-05-01-03-00"
+			},
+			{
+				"id": "0-04-01-04-00",
+				"name": "potted plant",
+				"icon": "🪴",
+				"type": "PlacedItem",
+				"subtype": "Decoration",
+				"category": "Normal",
+				"description": "Error",
+				"value": 100,
+				"transformId": "1-05-01-04-00"
 			}
 		],
 		"Ground": [
@@ -355,7 +384,7 @@
 				"subtype": "HarvestedItem",
 				"category": "Tree Fruit",
 				"description": "Error",
-				"value": 20
+				"value": 15
 			},
 			{
 				"id": "1-03-09-02-00",
@@ -385,7 +414,7 @@
 				"subtype": "HarvestedItem",
 				"category": "Tropical",
 				"description": "Error",
-				"value": 45
+				"value": 20
 			},
 			{
 				"id": "1-03-10-02-00",
@@ -462,6 +491,17 @@
 				"description": "Error",
 				"value": 25,
 				"transformId": "0-04-01-03-00"
+			},
+			{
+				"id": "1-05-01-04-00",
+				"name": "potted plant blueprint",
+				"icon": "📜",
+				"type": "InventoryItem",
+				"subtype": "Blueprint",
+				"category": "Normal",
+				"description": "Error",
+				"value": 100,
+				"transformId": "0-04-01-04-00"
 			}
 		]
 	}

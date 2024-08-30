@@ -276,7 +276,7 @@ test('Should Rollback on Failing Restock', () => {
 })
 
 test('Should Create Store Object From PlainObject', () => {
-	const serializedStore = JSON.stringify((new Store(0, "Test Store", 1, 1, 1, new ItemList([generateNewPlaceholderInventoryItem('apple seed', 5)]), new ItemList([]), 0, 60000)).toPlainObject());
+	const serializedStore = JSON.stringify((new Store(0, "Test Store", 1, 1, 1, new ItemList([generateNewPlaceholderInventoryItem('apple seed', 5)]), new ItemList([]), Date.now() + 1000000, 60000)).toPlainObject());
 	const store = Store.fromPlainObject(JSON.parse(serializedStore));
 	expect(store.getStoreId()).toBe(0);
 	expect(store.size()).toBe(1);

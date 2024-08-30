@@ -5,20 +5,20 @@ import { ItemSubtypes } from "@/models/items/ItemTypes";
 import React, { useEffect, useRef, useState } from "react";
 import { useInventory } from "@/hooks/contexts/InventoryContext";
 import { useGarden } from "@/hooks/contexts/GardenContext";
-import LevelSystemComponent from "@/components/level/LevelSystem";
 import { saveGarden } from "@/utils/localStorage/garden";
 import { usePlotActions } from "@/hooks/garden/plotActions";
 import { useSelectedItem } from "@/hooks/contexts/SelectedItemContext";
 import { useUser } from "@/hooks/contexts/UserContext";
+import GardenExpansionTooltip from "./gardenExpansionTooltip";
 
 const GardenComponent = () => {
 	const { inventory } = useInventory();
-	const { garden, gardenMessage, setGardenMessage } = useGarden();
+	const { garden, gardenMessage, setGardenMessage, instantGrow, toggleInstantGrow } = useGarden();
 	const { user } = useUser();
 	const {selectedItem, toggleSelectedItem} = useSelectedItem();
 	const [gardenForceRefreshKey, setGardenForceRefreshKey] = useState(0);
-	const [instantGrow, setInstantGrow] = useState(false); //for debug purposes
 	const plotRefs = useRef<PlotComponentRef[][]>(garden.getPlots().map(row => row.map(() => null!)));
+	const [showExpansionOptions, setShowExpansionOptions] = useState(false);
 
 	const [currentTime, setCurrentTime] = useState(Date.now());
 	// const [intervalId, setIntervalId] = useState<NodeJS.Timeout | null>(null);
@@ -104,13 +104,12 @@ const GardenComponent = () => {
 
 	const harvestAll = () => {
 		let currentPlants = 0;
-		for (let i = 0; i < garden.getRows(); i++) {
-			for (let j = 0; j < garden.getCols(); j++) {
-				if (garden.getPlotByRowAndColumn(i, j)?.getItemSubtype() === ItemSubtypes.PLANT.name) {
-					currentPlants++;
-				}
+		inventory.getAllItems().forEach((item) => {
+			if (item.itemData.subtype === ItemSubtypes.HARVESTED.name) {
+				currentPlants += item.getQuantity();
 			}
-		}
+		})
+
 		plotRefs.current.forEach(row => {
 			row.forEach(plotRef => {
 			  if (plotRef && plotRef.plot.getItemSubtype() === ItemSubtypes.PLANT.name) {
@@ -120,18 +119,16 @@ const GardenComponent = () => {
 		  });
 
 		let newCurrentPlants = 0;
-		for (let i = 0; i < garden.getRows(); i++) {
-			for (let j = 0; j < garden.getCols(); j++) {
-				if (garden.getPlotByRowAndColumn(i, j)?.getItemSubtype() === ItemSubtypes.PLANT.name) {
-					newCurrentPlants++;
-				}
+		inventory.getAllItems().forEach((item) => {
+			if (item.itemData.subtype === ItemSubtypes.HARVESTED.name) {
+				newCurrentPlants += item.getQuantity();
 			}
-		}
-		setGardenMessage(`Harvested ${currentPlants - newCurrentPlants} plants.`);
+		})
+		setGardenMessage(`Harvested ${newCurrentPlants - currentPlants} plants.`);
 	}
 
 
-	function expandRow() {
+	function addColumn() {
 		if (!garden || !user) {
 			return;
 		}
@@ -140,7 +137,7 @@ const GardenComponent = () => {
 		setGardenForceRefreshKey((gardenForceRefreshKey) => gardenForceRefreshKey + 1);
 	}
 
-	function expandCol() {
+	function addRow() {
 		if (!garden || !user) {
 			return;
 		}
@@ -149,7 +146,7 @@ const GardenComponent = () => {
 		setGardenForceRefreshKey((gardenForceRefreshKey) => gardenForceRefreshKey + 1);
 	}
 
-	function shrinkRow() {
+	function removeColumn() {
 		if (!garden) {
 			return;
 		}
@@ -158,7 +155,7 @@ const GardenComponent = () => {
 		setGardenForceRefreshKey((gardenForceRefreshKey) => gardenForceRefreshKey + 1);
 	}
 
-	function shrinkCol() {
+	function removeRow() {
 		if (!garden) {
 			return;
 		}
@@ -167,19 +164,20 @@ const GardenComponent = () => {
 		setGardenForceRefreshKey((gardenForceRefreshKey) => gardenForceRefreshKey + 1);
 	}
 
-	// function levelUp() {
-	// 	if (!garden) {
-	// 		return;
-	// 	}
-	// 	garden.addExp(garden.getExpToLevelUp());
-	// 	saveGarden(garden);
-	// 	setGardenForceRefreshKey((gardenForceRefreshKey) => gardenForceRefreshKey + 1);
-	// }
+	function handleGardenExpansionDisplay() {
+		setShowExpansionOptions((showExpansionOptions) => !showExpansionOptions);
+	}
 
-	function toggleInstantGrow() {
-		//Yes this is reversed, because instantGrow hasn't updated until the next render
-		setGardenMessage(`instant grow is now: ${!instantGrow ? `on` : `off`}`);
-		setInstantGrow((instantGrow) => !instantGrow);
+	const enableGardenExpansionButton = (row: boolean, expand: boolean) => {
+		if (row && expand) {
+			return !garden.canAddRow(user);
+		} else if (!row && expand) {
+			return !garden.canAddColumn(user);
+		} else if (row && !expand) { 
+			return garden.getRows() < 2;
+		} else { //(!row && !expand)
+			return garden.getCols() < 2;
+		} 
 	}
 
 	return (
@@ -190,21 +188,30 @@ const GardenComponent = () => {
 				{generatePlots(garden.getPlots())}
 			</div>
 		</div>
-		<div>
-			<button onClick={plantAll} className={`bg-gray-300 px-4 py-1 text-sm text-purple-600 font-semibold rounded-full border border-purple-200 hover:text-white hover:bg-purple-600 hover:border-transparent focus:outline-none focus:ring-2 focus:ring-purple-600 focus:ring-offset-2`} data-testid="plant-all">Plant All</button>
-			<button onClick={harvestAll} className={`bg-gray-300 px-4 py-1 text-sm text-purple-600 font-semibold rounded-full border border-purple-200 hover:text-white hover:bg-purple-600 hover:border-transparent focus:outline-none focus:ring-2 focus:ring-purple-600 focus:ring-offset-2`} data-testid="harvest-all">Harvest All</button>
-		</div>
-		<div>
-			<button onClick={expandRow} className={`bg-gray-300 px-4 py-1 text-sm text-purple-600 font-semibold rounded-full border border-purple-200 hover:text-white hover:bg-purple-600 hover:border-transparent focus:outline-none focus:ring-2 focus:ring-purple-600 focus:ring-offset-2`} data-testid="expand-row">expand row</button>
-			<button onClick={expandCol} className={`bg-gray-300 px-4 py-1 text-sm text-purple-600 font-semibold rounded-full border border-purple-200 hover:text-white hover:bg-purple-600 hover:border-transparent focus:outline-none focus:ring-2 focus:ring-purple-600 focus:ring-offset-2`} data-testid="expand-col">expand col</button>
-			{/* <button onClick={levelUp} className={`bg-gray-300 px-4 py-1 text-sm text-purple-600 font-semibold rounded-full border border-purple-200 hover:text-white hover:bg-purple-600 hover:border-transparent focus:outline-none focus:ring-2 focus:ring-purple-600 focus:ring-offset-2`}>levelup (debug)</button> */}
-		</div>
-		<div>
-			<button onClick={shrinkRow} className={`bg-gray-300 px-4 py-1 text-sm text-purple-600 font-semibold rounded-full border border-purple-200 hover:text-white hover:bg-purple-600 hover:border-transparent focus:outline-none focus:ring-2 focus:ring-purple-600 focus:ring-offset-2`} data-testid="shrink-row">shrink row</button>
-			<button onClick={shrinkCol} className={`bg-gray-300 px-4 py-1 text-sm text-purple-600 font-semibold rounded-full border border-purple-200 hover:text-white hover:bg-purple-600 hover:border-transparent focus:outline-none focus:ring-2 focus:ring-purple-600 focus:ring-offset-2`} data-testid="shrink-col">shrink col</button>
-		</div>
-		<div>
-			<button onClick={toggleInstantGrow} className={`bg-gray-300 px-4 py-1 text-sm text-purple-600 font-semibold rounded-full border border-purple-200 hover:text-white hover:bg-purple-600 hover:border-transparent focus:outline-none focus:ring-2 focus:ring-purple-600 focus:ring-offset-2`}>toggle instant harvest mode (debug)</button>
+		<div className="my-1">
+			<div>
+				<button onClick={plantAll} className={`bg-gray-300 px-4 py-1 mx-1 my-1 text-sm text-purple-600 font-semibold rounded-full border border-purple-200 hover:text-white hover:bg-purple-600 hover:border-transparent focus:outline-none focus:ring-2 focus:ring-purple-600 focus:ring-offset-2`} data-testid="plant-all">Plant All</button>
+				<button onClick={harvestAll} className={`bg-gray-300 px-4 py-1 mx-1 my-1 text-sm text-purple-600 font-semibold rounded-full border border-purple-200 hover:text-white hover:bg-purple-600 hover:border-transparent focus:outline-none focus:ring-2 focus:ring-purple-600 focus:ring-offset-2`} data-testid="harvest-all">Harvest All</button>
+			</div>
+			<button onClick={handleGardenExpansionDisplay} className={`bg-gray-300 px-4 py-1 mx-1 my-1 text-sm text-purple-600 font-semibold rounded-full border border-purple-200 hover:text-white hover:bg-purple-600 hover:border-transparent focus:outline-none focus:ring-2 focus:ring-purple-600 focus:ring-offset-2`}>{`${!showExpansionOptions ? `Show` : `Hide`} Garden Expansion Options`}</button>
+			<div className={`${showExpansionOptions ? `` : `hidden`} flex flex-row`}>
+				<div className="flex flex-col">
+					<GardenExpansionTooltip row={true} expand={false}>
+						<button onClick={removeRow} disabled={enableGardenExpansionButton(true, false)} className={`bg-gray-300 px-4 py-1 mx-1 my-1 text-sm text-purple-600 font-semibold rounded-full border border-purple-200 hover:text-white hover:bg-purple-600 hover:border-transparent focus:outline-none focus:ring-2 focus:ring-purple-600 focus:ring-offset-2`} data-testid="shrink-col">Remove Garden Row</button>
+					</GardenExpansionTooltip>
+					<GardenExpansionTooltip row={false} expand={false}>
+						<button onClick={removeColumn} disabled={enableGardenExpansionButton(false, false)} className={`bg-gray-300 px-4 py-1 mx-1 my-1 text-sm text-purple-600 font-semibold rounded-full border border-purple-200 hover:text-white hover:bg-purple-600 hover:border-transparent focus:outline-none focus:ring-2 focus:ring-purple-600 focus:ring-offset-2`} data-testid="shrink-row">Remove Garden Column</button>
+					</GardenExpansionTooltip>
+				</div>
+				<div className="flex flex-col">
+					<GardenExpansionTooltip row={true} expand={true}>
+						<button onClick={addRow} disabled={enableGardenExpansionButton(true, true)} className={`bg-gray-300 px-4 py-1 mx-1 my-1 text-sm text-purple-600 font-semibold rounded-full border border-purple-200 hover:text-white hover:bg-purple-600 hover:border-transparent focus:outline-none focus:ring-2 focus:ring-purple-600 focus:ring-offset-2`} data-testid="expand-col">Add Garden Row</button>
+					</GardenExpansionTooltip>
+					<GardenExpansionTooltip row={false} expand={true}>
+						<button onClick={addColumn} disabled={enableGardenExpansionButton(false, true)} className={`bg-gray-300 px-4 py-1 mx-1 my-1 text-sm text-purple-600 font-semibold rounded-full border border-purple-200 hover:text-white hover:bg-purple-600 hover:border-transparent focus:outline-none focus:ring-2 focus:ring-purple-600 focus:ring-offset-2`} data-testid="expand-row">Add Garden Column</button>
+					</GardenExpansionTooltip>
+				</div>
+			</div>
 		</div>
      	</>
 	);

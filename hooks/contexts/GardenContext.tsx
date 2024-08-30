@@ -7,6 +7,10 @@ interface GardenContextType {
     resetGarden: () => void;
     gardenMessage: string;
     setGardenMessage: React.Dispatch<React.SetStateAction<string>>;
+    instantGrow: boolean;
+    toggleInstantGrow: () => void;
+    gardenForceRefreshKey: number;
+    updateGardenForceRefreshKey: () => void;
     // Add any other actions or state you need
 }
 

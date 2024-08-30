@@ -39,7 +39,6 @@ test('Should Initialize PlacedItem Object', () => {
 test('Should Use Decoration Item', () => {
 	const item = decorationItem;
 	const response = item.use();
-	expect(item.getStatus()).toBe('removed');
 	expect(response.isSuccessful()).toBe(true);
 	expect(response.payload.newTemplate.name).toBe('bench blueprint');
 })
@@ -47,7 +46,6 @@ test('Should Use Decoration Item', () => {
 test('Should Use Plant Item', () => {
 	const item = plantItem;
 	const response = item.use();
-	expect(item.getStatus()).toBe('removed');
 	expect(response.isSuccessful()).toBe(true);
 	expect(response.payload.newTemplate.name).toBe('apple');
 })

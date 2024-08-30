@@ -50,6 +50,10 @@
 				"icon": "🦩"
 			},
 			{
+				"name": "construction sign",
+				"icon": "🚧"
+			},
+			{
 				"name": "blueprint",
 				"icon": "📜"
 			}

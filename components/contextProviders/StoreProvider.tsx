@@ -3,7 +3,9 @@ import { StoreContext } from '@/hooks/contexts/StoreContext';
 import { generateNewPlaceholderInventoryItem } from '@/models/items/PlaceholderItems';
 import { InventoryTransactionResponse } from '@/models/itemStore/inventory/InventoryTransactionResponse';
 import { ItemList } from '@/models/itemStore/ItemList';
+import { stocklistRepository } from '@/models/itemStore/store/StocklistRepository';
 import { Store } from '@/models/itemStore/store/Store';
+import { storeRepository } from '@/models/itemStore/store/StoreRepository';
 import { loadStore, saveStore } from '@/utils/localStorage/store';
 import React, { ReactNode, useCallback, useEffect, useRef, useState } from 'react';
 
@@ -17,30 +19,25 @@ export const StoreProvider = ({ children }: StoreProviderProps) => {
 
 	function generateInitialStore() {
 		function generateItems() { 
-			return new ItemList([
-				generateNewPlaceholderInventoryItem('apple seed', 100),
-				generateNewPlaceholderInventoryItem('banana seed', 50),
-				generateNewPlaceholderInventoryItem('coconut seed', 25),
-				generateNewPlaceholderInventoryItem('mango seed', 25),
-				generateNewPlaceholderInventoryItem('magic mango seed', 1),
-				generateNewPlaceholderInventoryItem('yellow onion seed', 25),
-				generateNewPlaceholderInventoryItem('garlic seed', 25),
-				generateNewPlaceholderInventoryItem('cherry seed', 25),
-				generateNewPlaceholderInventoryItem('peach seed', 25),
-				generateNewPlaceholderInventoryItem('bench blueprint', 10),
-				generateNewPlaceholderInventoryItem('flamingo blueprint', 2),
-				generateNewPlaceholderInventoryItem('construction sign blueprint', 2)
-			]);	
+			return stocklistRepository.getStocklistInterfaceById("0")?.items;
 		}
 		const storeId = 0;
-		const storeName = "Test Store";
-		const buyMultiplier = 2;
-		const sellMultiplier = 1;
-		const upgradeMultiplier = 1;
-		const restockTime = Date.now();
-		const restockInterval = 300000;
-		
-		return new Store(storeId, storeName, buyMultiplier, sellMultiplier, upgradeMultiplier, generateItems(), generateItems(), restockTime, restockInterval);
+		const storeName = "Default Store";
+		const storeInterface = storeRepository.getStoreInterfaceById(0);
+		let buyMultiplier = 2;
+		let sellMultiplier = 1;
+		let upgradeMultiplier = 1;
+		let restockTime = Date.now();
+		let restockInterval = 300000;
+		if (storeInterface) {
+			buyMultiplier = storeInterface.buyMultiplier;
+			sellMultiplier = storeInterface.sellMultiplier;
+			upgradeMultiplier = storeInterface.upgradeMultiplier;
+			restockInterval = storeInterface.restockInterval;
+		}
+		const initialStore = new Store(storeId, storeName, buyMultiplier, sellMultiplier, upgradeMultiplier, new ItemList(), generateItems(), restockTime, restockInterval);
+		initialStore.restockStore();
+		return initialStore;
 	}
 
 	function setupStore(): Store {
@@ -49,7 +46,7 @@ export const StoreProvider = ({ children }: StoreProviderProps) => {
 		if (!(store instanceof Store)) {
 		  console.log('store not found, setting up');
 		  store = generateInitialStore();
-		  store.restockStore();
+		//   store.restockStore();
 		}
 		updateRestockTimer();
 		saveStore(store);

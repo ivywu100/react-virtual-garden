@@ -164,10 +164,12 @@ const TradeWindowComponent = ({costMultiplier}: {costMultiplier: number}) => {
 	}
 	
 	return (<>
-		<div>{tradeWindowMessage}</div>
-		<div className="w-full">
-		{renderInventoryItem()}
-		{renderQuantityButtons()}
+		<div className={`my-8`}>
+			<div>{tradeWindowMessage}</div>
+			<div className="w-full">
+			{renderInventoryItem()}
+			{renderQuantityButtons()}
+			</div>
 		</div>
 	</>);
 }

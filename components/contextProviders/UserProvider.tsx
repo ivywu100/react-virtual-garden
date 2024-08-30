@@ -42,6 +42,7 @@ export const UserProvider = ({ children }: UserProviderProps) => {
 		setIcon(user.getIcon());
 	}, []);
 
+
 	function handleChangeUsername(newUsername: string) {
 		if (!user) return;
 		user.setUsername(newUsername);

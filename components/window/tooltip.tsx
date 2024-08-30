@@ -1,10 +1,23 @@
 'use client'
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useLayoutEffect, useRef, useState } from 'react';
 
 const Tooltip = ({ children, content, position = 'top', backgroundColor, forceVisible = '', boxWidth = '20vw' }: { children: React.ReactNode, content: React.ReactNode, position: string, backgroundColor: string, forceVisible: string, boxWidth: string}) => {
   const [visible, setVisible] = useState(false);
   const [coords, setCoords] = useState({ top: 0, left: 0 });
   const [tooltipWidth, setTooltipWidth] = useState(boxWidth); // Default value
+  const [finalPosition, setFinalPosition] = useState(position); // Add state for final position
+  const tooltipRef = useRef<HTMLDivElement>(null);
+
+  const [dimensions, setDimensions] = useState({ width:0, height: 0 });
+
+  useLayoutEffect(() => {
+    if (tooltipRef.current) {
+      setDimensions({
+        width: tooltipRef.current.offsetWidth,
+        height: tooltipRef.current.offsetHeight
+      });
+    }
+  }, []);
 
   useEffect(() => {
     // Update tooltip width on window resize
@@ -23,10 +36,10 @@ const Tooltip = ({ children, content, position = 'top', backgroundColor, forceVi
     const rect = event.currentTarget.getBoundingClientRect();
     const { top, left, width, height } = rect;
     
-    let tooltipTop, tooltipLeft;
-    switch (position) {
+    let tooltipTop: number, tooltipLeft: number;
+    switch (finalPosition) {
       case 'top': //We're only using top right now, so didn't bother with the scroll for other cases.
-        tooltipTop = top - window.scrollY - 10; // Account for scroll
+        tooltipTop = top - 10; // Account for scroll
         tooltipLeft = left + width / 2 + 10;
         break;
       case 'right':
@@ -42,12 +55,32 @@ const Tooltip = ({ children, content, position = 'top', backgroundColor, forceVi
         tooltipLeft = left - 10;
         break;
       default:
-        tooltipTop = top + window.scrollY - 10;
+        tooltipTop = top - 10;
         tooltipLeft = left + width / 2;
     }
 
-    setCoords({ top: tooltipTop + window.scrollY, left: tooltipLeft + window.scrollX });
+    setCoords({ top: tooltipTop, left: tooltipLeft });
     setVisible(true);
+
+    // Measure tooltip size after it becomes visible
+    setTimeout(() => {
+      if (tooltipRef.current) {
+
+        const tooltipRect = tooltipRef.current.getBoundingClientRect();
+        
+        // Check if the tooltip goes off the top of the screen
+        if (tooltipRect.top - 10 < 0 && (finalPosition !== 'left' && finalPosition !== 'right' && finalPosition !== 'bottom')) {
+          tooltipTop = top + tooltipRect.height + height + 10; // Adjust to show below the element
+        } 
+        // Check if the tooltip goes off the bottom of the screen
+        else if (tooltipRect.bottom > window.innerHeight && finalPosition === 'bottom') {
+          tooltipTop = top - tooltipRect.height - 10; // Adjust to show above the element
+        }
+
+        // Update tooltip coordinates after checking bounds
+        setCoords({ top: tooltipTop, left: tooltipLeft });
+      }
+    }, 10); // Ensure tooltip is rendered before measuring
   };
 
   const hideTooltip = () => {
@@ -64,6 +97,7 @@ const Tooltip = ({ children, content, position = 'top', backgroundColor, forceVi
       {/* ON = always show, OFF = never show, other = show if moused over */}
       {(forceVisible === 'ON' || (visible && forceVisible !== 'OFF')) && (
         <div
+          ref={tooltipRef}
           className={`fixed z-10 px-2 py-1 text-sm text-purple-800 text-semibold ${backgroundColor} rounded shadow-lg
           ${position === 'top' ? 'transform -translate-x-1/2 -translate-y-full' : ''}
           ${position === 'right' ? 'transform -translate-y-1/2' : ''}

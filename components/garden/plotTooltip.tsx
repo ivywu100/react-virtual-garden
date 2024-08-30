@@ -57,6 +57,7 @@ const PlotTooltip = ({ children, plot, currentTime }: { children: React.ReactNod
 				<div className={`${colors.harvested.categoryTextColor} text-left`} data-testid="tool-category-type">Category: {currentItem.itemData.category}</div>
 				<div data-testid="tool-status">{plot.getRemainingGrowTime(currentTime)}</div>
 				<div data-testid="tool-xp-gained">XP Gained: {currentItem.itemData.baseExp}</div>
+				<div>Harvests Remaining: {plot.getUsesRemaining()}</div>
 			</div>
 		</>);
 	}
@@ -106,7 +107,6 @@ const PlotTooltip = ({ children, plot, currentTime }: { children: React.ReactNod
 
 		return <>
 		<div className="flex flex-col items-left min-w-0 flex-grow">
-			<div>Planting: </div>
 			<div className="flex flex-row justify-between min-w-max">
 				<div className="flex flex-row min-w-0">
 					<span className="w-6 flex-shrink-0">{currentItem.itemData.icon}</span>
@@ -132,6 +132,7 @@ const PlotTooltip = ({ children, plot, currentTime }: { children: React.ReactNod
 					{harvestedItem.value}
 				</span>
 			</div>
+			<div>{plantTemplate.numHarvests === 1 ? `1 harvest` : plantTemplate.numHarvests.toString() + ' harvests'}</div>
 			<div>{plantTemplate.getGrowTimeString()}</div>
 			<div>XP Gained: {plantTemplate.baseExp}</div>
 		</div>

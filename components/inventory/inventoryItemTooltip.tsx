@@ -66,6 +66,7 @@ const InventoryItemTooltip = ({ children, item }: { children: React.ReactNode, i
 					{harvestedItem.value}
 				</span>
 			</div>
+			<div>{plantTemplate.numHarvests === 1 ? `1 harvest` : plantTemplate.numHarvests.toString() + ' harvests'}</div>
 			<div>{plantTemplate.getGrowTimeString()}</div>
 			<div>XP Gained: {plantTemplate.baseExp}</div>
 		</div>

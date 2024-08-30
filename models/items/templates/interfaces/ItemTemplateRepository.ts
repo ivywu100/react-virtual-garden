@@ -52,6 +52,8 @@ class ItemTemplateInterfaceRepository {
 		  transformId: item.transformId,
 		  baseExp: item.baseExp,
 		  growTime: item.growTime,
+		  repeatedGrowTime: item.repeatedGrowTime,
+		  numHarvests: item.numHarvests,
 		  // Add additional properties if needed
 		};
 	  }

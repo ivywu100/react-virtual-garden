@@ -10,6 +10,7 @@ import { saveInventory } from "@/utils/localStorage/inventory";
 import { saveUser } from "@/utils/localStorage/user";
 import { useGarden } from "../contexts/GardenContext";
 import { useInventory } from "../contexts/InventoryContext";
+import { useSelectedItem } from "../contexts/SelectedItemContext";
 import { useUser } from "../contexts/UserContext";
 
 //contains static onclick functions for plot components
@@ -17,6 +18,7 @@ export const usePlotActions = () => {
 	const {garden, setGardenMessage } = useGarden();
 	const {inventory, updateInventoryForceRefreshKey} = useInventory();
 	const {user} = useUser();
+	const {toggleSelectedItem} = useSelectedItem();
 
 	/**
 	 * Can only be used in an empty plot. Converts an inventoryItem seed into a plant and places it in this plot.
@@ -37,6 +39,9 @@ export const usePlotActions = () => {
 				return plot.getItem().itemData.icon; 
 			}
 			updateInventoryForceRefreshKey();
+			if (item.getQuantity() <= 0) {
+				toggleSelectedItem(null);
+			}
 			saveInventory(inventory);
 			saveGarden(garden);
 			setGardenMessage(`Planted ${item.itemData.name}.`);
@@ -63,8 +68,15 @@ export const usePlotActions = () => {
 				return plot.getItem().itemData.icon; 
 			}
 			updateInventoryForceRefreshKey();
+
+			const placedItem = placeItemResponse.payload.newItem as PlacedItem;
+			user.updateDecorationHistory(placedItem);
+			if (item.getQuantity() <= 0) {
+				toggleSelectedItem(null);
+			}
 			saveInventory(inventory);
 			saveGarden(garden);
+			saveUser(user);
 			setGardenMessage(`Placed ${placeItemResponse.payload.newItem.itemData.name}.`);
 			return plot.getItem().itemData.icon;
 		}
@@ -84,7 +96,7 @@ export const usePlotActions = () => {
 				return plot.getItem().itemData.icon;
 			}
 			const xp = plot.getExpValue();
-			const harvestItemResponse = plot.harvestItem(inventory, instantGrow);
+			const harvestItemResponse = plot.harvestItem(inventory, instantGrow, 1);
 			if (!harvestItemResponse.isSuccessful()) {
 				setGardenMessage(` `);
 				return plot.getItem().itemData.icon;
