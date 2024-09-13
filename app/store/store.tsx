@@ -86,7 +86,7 @@ const StoreComponent = ({onInventoryItemClickFunction}: {onInventoryItemClickFun
 
 	return (
 		<>
-		<div className="w-[80%]">
+		<div className="w-[80%]" data-testid="store">
 			<div className="font-bold text-3xl">{store.getStoreName()}</div>
 			<div>{RenderStoreDiscountString()}</div>
 			<ItemStoreComponent itemStore={store} onInventoryItemClickFunction={onInventoryItemClickFunction} costMultiplier={store.getBuyMultiplier()} maxHeightPercentage={60}/>

@@ -1,11 +1,13 @@
-import { gardenPlot } from "../pageObjects/gardenPlot";
-import { gardenPage } from "../pageObjects/gardenPage";
-import { toolTipWindow } from "../pageObjects/toolTipsWindow";
+import { gardenPlot } from "../pageObjects/garden/gardenPlot";
+import { garden } from "../pageObjects/garden/garden";
+import { gardenToolTipWindow } from "../pageObjects/garden/gardenToolTipsWindow";
+import { inventory } from "../pageObjects/inventory/inventory";
 
 describe("should plant seeds and harvest plants in garden", () => {
   const gardenPlots = new gardenPlot();
-  const gardenPg = new gardenPage();
-  const toolTips = new toolTipWindow();
+  const gardenPg = new garden();
+  const toolTips = new gardenToolTipWindow();
+  const userInventory = new inventory();
   let rowLen: number;
   let colLen: number;
   let curGold: number;
@@ -25,18 +27,18 @@ describe("should plant seeds and harvest plants in garden", () => {
       colLen = val;
     });
 
-    gardenPg.getCurrentGold.then(val => {
+    userInventory.getCurrentGold.then(val => {
       curGold = parseInt(val.text().replace("Gold: ", ""));
     });
   });
 
   it("should plant seed in each plot", () => {
-    gardenPg.userInventorySection.contains("apple seed").click();
+    userInventory.userInventorySection.contains("apple seed").click();
     gardenPlots.individuallySelectAllPlots();
-    gardenPage.gardenPlots().contains("_").should("not.exist");
+    garden.gardenPlots().contains("_").should("not.exist");
 
     let applesRemoved = curGold - rowLen * colLen;
-    gardenPg.findInventoryQty(seedToPlant).then(val => {
+    userInventory.findInventoryQty(seedToPlant).then(val => {
       expect(parseInt(val.text())).to.equal(applesRemoved);
     });
   });
@@ -70,10 +72,6 @@ describe("should plant seeds and harvest plants in garden", () => {
   });
 
   it("should confirm plant tool tip contains correct information plant all", () => {
-    // let applesRemoved = curGold - rowLen * colLen;
-    // gardenPg.findInventoryQty(seedToPlant).then(val => {
-    //   expect(parseInt(val.text())).to.equal(applesRemoved);
-    // });
 
     gardenPlots.singlePlot.last().trigger("mouseover");
     toolTips.toolTip.first().within(() => {

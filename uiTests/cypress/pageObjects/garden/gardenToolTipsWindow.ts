@@ -1,4 +1,4 @@
-export class toolTipWindow {
+export class gardenToolTipWindow {
   toolTipSelector = '[data-testid="tool-tip"]';
   toolNameSelector = '[data-testid="tool-name"]';
   toolSellPriceSelector = '[data-testid="tool-sell-price"]';

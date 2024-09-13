@@ -1,4 +1,4 @@
-import { gardenPage } from "./gardenPage";
+import { garden } from "./garden";
 
 export class gardenPlot {
   singlePlotSelector = '[data-testid="plot"]';
@@ -34,7 +34,7 @@ export class gardenPlot {
   }
 
   individuallySelectAllPlots() {
-    const plots = gardenPage.gardenPlots();
+    const plots = garden.gardenPlots();
     plots.children().each($row => {
       cy.wrap($row)
         .children()
