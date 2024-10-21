@@ -24,9 +24,10 @@ const LoginPage = () => {
   }, []);
   
   return (<>
-      <div> {`This is the login page, but it's still in development...`}
+      <div className="flex flex-1 bg-reno-sand-200 text-black"> 
+      <div className="mx-4">The login page isn&apos;t done yet!</div>
       </div>
-      <div>{loading ? `loading...` : testString}</div>
+      {/* <div>{loading ? `loading...` : testString}</div> */}
       {/* <IconList/> */}
     </>
   );
