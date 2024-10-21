@@ -54,7 +54,7 @@ describe("should plant seeds and harvest plants in garden", () => {
         expect(val.text().replace("Category: ", "")).to.equal("Tree Fruit");
       });
       toolTips.toolCategoryStatus.contains(toolTips.readyHarvestMessage, {
-        timeout: 31000,
+        timeout: 11000,
       });
       toolTips.toolXP.then(val => {
         expect(val.text().replace("XP Gained: ", "")).to.equal("2");
@@ -84,7 +84,7 @@ describe("should plant seeds and harvest plants in garden", () => {
         expect(val.text().replace("Category: ", "")).to.equal("Tree Fruit");
       });
       toolTips.toolCategoryStatus.contains(toolTips.readyHarvestMessage, {
-        timeout: 31000,
+        timeout: 11000,
       });
       toolTips.toolXP.then(val => {
         expect(val.text().replace("XP Gained: ", "")).to.equal("2");
