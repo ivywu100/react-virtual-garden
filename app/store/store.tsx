@@ -75,7 +75,12 @@ const StoreComponent = ({
 
   return (
     <>
-      <div className="w-[80%]" key={forceRefreshKey} data-testid="store">
+      <div
+        className="w-[80%]"
+        key={forceRefreshKey}
+        data-testid="store"
+        data-testid="store"
+      >
         <div className="font-bold text-3xl">{store.getStoreName()}</div>
         <div>{RenderStoreDiscountString()}</div>
         <ItemStoreComponent
