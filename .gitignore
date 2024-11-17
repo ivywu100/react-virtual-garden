@@ -38,3 +38,5 @@ yarn-error.log*
 next-env.d.ts
 
 /personal_notes/secret_notes/*
+/secrets
+/secrets/*
