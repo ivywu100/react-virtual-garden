@@ -32,40 +32,12 @@ export abstract class InventoryItem extends Item {
 		this.quantity = quantity;
 	}
 
-	// static fromPlainObject(plainObject: any): InventoryItem {
-	// 	try {
-    //         // Validate plainObject structure
-    //         if (!plainObject || typeof plainObject !== 'object' || !plainObject.itemData || !plainObject.quantity) {
-    //             throw new Error('Invalid plainObject structure for InventoryItem');
-    //         }
-	// 		// Validate required properties
-	// 		const { itemData, quantity } = plainObject;
-
-	// 		if (!itemData || typeof quantity !== 'number') {
-	// 			throw new Error('Invalid properties in plainObject for InventoryItem');
-	// 		}
-	
-	// 		// Validate itemData structure
-	// 		const validatedItemData = InventoryItemTemplate.fromPlainObject(itemData);
-	
-	// 		return new InventoryItem(validatedItemData, quantity);
-	// 	} catch (err) {
-	// 		console.error('Error creating InventoryItem from plainObject:', err);
-    //         return new InventoryItem(InventoryItemTemplate.getErrorTemplate(), 1);
-	// 	}
-	// }
 
 	static fromPlainObject(plainObject: any): InventoryItem {
         throw new Error("fromPlainObject must be implemented in subclasses");
     }
 
 	abstract toPlainObject(): any;
-	// {
-	// 	return {
-	// 		quantity: this.quantity,
-	// 		itemData: this.itemData.toPlainObject()
-	// 	}
-	// } 
 
 	/**
 	 * @returns the inventoryItemId for database access

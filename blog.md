@@ -323,6 +323,7 @@
   * Updated header
   * Account icon and dropdown menu
   * Updated description on login screen
+  * Added react-redux to track item quantities for instant updating when planting/harvesting/buying/selling
 
 
 TODO:
@@ -393,6 +394,9 @@ New user -> backend sets up user, garden, inventory, store, etc. (choose uuids h
 Old user -> backend checks for current id -> grab data from database based on current id -> push to backend model
 
 
+UI Bugs
+Increasing the size of a tooltip while it is hovered does not change its position; this can cause issues where the tooltip goes off the screen or interferes with the mouse pointer, ie. when a plot goes from planted item to empty/displaying the harvested item vs planted. 
+
 Stretch Goals
 Instead of expanding row/col, have the user add 1 plot at a time
 This is a design flaw, not a coding one -- right now supports exponential growth when it should be linear, also easier to make iterative progress
@@ -403,3 +407,10 @@ Small, medium, large stores with different restock intervals and stock limits
 Item metadata migration tool
 Dev/Prod external dbs, and dev/prod branches
 Garden Stock Market - buying/selling pressure, variable costs, options and futures
+
+Crop rotation thoughts
+Garden has Fertility, Structure, Biodiversity quantities. 
+Fertility - Soil nutrient levels, determines crop yields and quality rating
+Structure - Soil physical health, determines grow speed and natural disaster resistance
+Biodiversity - Soil biological health, determines xp earned and pest resistance
+Growing certain crops increases/decreases these respectively

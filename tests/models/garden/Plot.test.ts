@@ -6,6 +6,7 @@ import { ItemTemplateRepository } from "@/models/items/templates/models/ItemTemp
 import { placeholderItemTemplates } from "@/models/items/templates/models/PlaceholderItemTemplate";
 import { PlantTemplate } from "@/models/items/templates/models/PlantTemplate";
 import { v4 as uuidv4 } from 'uuid';
+import User from "@/models/user/User";
 
 
 let testPlot: Plot;
@@ -13,7 +14,7 @@ let testInventory: Inventory;
 
 beforeEach(() => {
 	testPlot = new Plot(uuidv4(), generateNewPlaceholderPlacedItem('apple', ''), 0, 1);
-	testInventory = new Inventory(uuidv4(), "Test User");
+	testInventory = new Inventory(uuidv4(), User.getDefaultUserName());
 });
 
 test('Should Initialize Plot Object', () => {

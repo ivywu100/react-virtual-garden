@@ -137,7 +137,8 @@ export class Store extends ItemStore {
 		function generateItems() { 
 			return stocklistFactory.getStocklistInterfaceById("0")?.items;
 		}
-		const storeIdentifier = 1;
+		const useTestStore = process.env.TEST_ENV_KEY === 'this is the local environment';
+		const storeIdentifier = useTestStore ? 1 : 0;
 		const storeInterface = storeFactory.getStoreInterfaceById(storeIdentifier);
 		let storeName = "Default Store";
 		let buyMultiplier = 2;

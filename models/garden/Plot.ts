@@ -12,6 +12,7 @@ import { placeholderItemTemplates } from "../items/templates/models/PlaceholderI
 import { PlantTemplate } from "../items/templates/models/PlantTemplate";
 import { v4 as uuidv4 } from 'uuid';
 import { ItemTemplate } from "../items/templates/models/ItemTemplate";
+import { getTimeString } from "../utility/Time";
 
 export interface PlotEntity {
 	row_index: number,
@@ -291,31 +292,13 @@ export class Plot {
 			return "Ready to harvest!";
 		}
 		const remainingTime = Math.min(item.itemData.growTime, Math.max(1, Math.round((plantedTime + this.getTotalGrowTime() * 1000 - currentTime) / 1000)));
-		// Calculate days, hours, minutes, and seconds
-		const remainingDays = Math.floor(remainingTime / (24 * 3600));
-		const remainingHours = Math.floor((remainingTime % (24 * 3600)) / 3600);
-		const remainingMinutes = Math.floor((remainingTime % 3600) / 60);
-		const remainingSeconds = Math.floor(remainingTime % 60);
-
-		// Format components with leading zeros
-		const formattedDays = remainingDays.toString();
-		const formattedHours = remainingHours.toString().padStart(2, '0');
-		const formattedMinutes = remainingMinutes.toString().padStart(2, '0');
-		const formattedSeconds = remainingSeconds.toString().padStart(2, '0');
+		
+		const timeString = getTimeString(remainingTime);
 		
 		const isFirstGrowth = this.getUsesRemaining() === (this.item.itemData as PlantTemplate).numHarvests;
 
 		const fullyGrownText = isFirstGrowth ? `Fully Grown in: ` : `Next Harvest in: `
-
-		if (remainingTime < 60) {
-			return `${fullyGrownText} ${remainingTime} seconds`;
-		} else if (remainingTime < 3600) {
-			return `${fullyGrownText} ${remainingMinutes}:${formattedSeconds}`;
-		} else if (remainingTime < 3600 * 24) {
-			return `${fullyGrownText} ${remainingHours}:${formattedMinutes}:${formattedSeconds}`;
-		} else {
-			return `${fullyGrownText} ${formattedDays}d ${formattedHours}:${formattedMinutes}`;
-		}
+		return `${fullyGrownText} ${timeString}`;
 	}
 
 	/**

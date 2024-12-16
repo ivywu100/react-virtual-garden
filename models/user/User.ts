@@ -96,7 +96,11 @@ class User {
 	}
 
 	static generateNewUserWithId(firebaseUid: string): User {
-		return new User(firebaseUid, 'Test User', 'apple');
+		return new User(firebaseUid, this.getDefaultUserName(), 'apple');
+	}
+
+	static getDefaultUserName(): string {
+		return "Unknown Farmer";
 	}
 
 	getUserId(): string {
@@ -212,15 +216,7 @@ class User {
 		}
 		const itemHistory = new ItemHistory(uuidv4(), decorationItem.itemData, 1);
 		this.itemHistory.addItemHistory(itemHistory);
-		// const harvestAllHistory = actionHistoryFactory.createActionHistoryByIdentifiers(decorationItem.itemData.subtype, 'all', 'harvested', 1);
 		const placeDecorationHistory = actionHistoryFactory.createActionHistoryByIdentifiers(decorationItem.itemData.subtype, decorationItem.itemData.category, 'placed', 1);
-		// if (harvestAllHistory) {
-		// 	this.actionHistory.addActionHistory(harvestAllHistory);
-		// 	response.payload = true;
-		// } else {
-		// 	//probably impossible to reach, would only occur if allHistory doesn't exist, which requires modification of histories.json
-		// 	response.addErrorMessage(`Error updating history: could not find all action history`);
-		// }
 
 		if (placeDecorationHistory) {
 			this.actionHistory.addActionHistory(placeDecorationHistory);
@@ -233,7 +229,7 @@ class User {
 	}
 
 	isIconUnlocked(iconOption: Icon) {
-		if (iconOption.getName() === 'apple' || iconOption.getName() === 'blueprint') return true;
+		if (iconOption.getName() === 'apple') return true;
 		const template = placeholderItemTemplates.getPlacedItemTemplateByName(iconOption.getName());
 		if (!template) return false;
 		const itemAvailable = this.getItemHistory().contains(template);

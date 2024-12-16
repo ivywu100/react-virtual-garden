@@ -6,7 +6,7 @@ interface AccountContextType {
     account: Account;
     guestMode: boolean;
     setGuestMode: (arg: boolean) => void;
-    fetchEnvironmentTestKey: () => Promise<string>;
+    environmentTestKey: string;
     // Add any other actions or state you need
 }
 

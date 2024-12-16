@@ -32,7 +32,7 @@ const UserPage = () => {
     const { inventory, reloadInventory } = useInventory();
     const { store, reloadStore } = useStore();
     const { garden, reloadGarden } = useGarden();
-    const { account, guestMode, setGuestMode, fetchEnvironmentTestKey } = useAccount();
+    const { account, guestMode, setGuestMode, environmentTestKey } = useAccount();
     const router = useRouter();
     const [isRedirecting, setIsRedirecting] = useState(false);
 
@@ -211,8 +211,8 @@ const UserPage = () => {
       return;
     }
 
-    async function renderAccountManagementButtons() {
-      const environmentTestKey = await fetchEnvironmentTestKey();
+    function renderAccountManagementButtons() {
+      // const environmentTestKey = await fetchEnvironmentTestKey();
 
       if (!environmentTestKey) {
         return (
@@ -226,7 +226,7 @@ const UserPage = () => {
       if (environmentTestKey === 'this is the local environment' || environmentTestKey === 'this is the dev environment') {
         return (
           <>
-          <div>Environment test key successfully returned</div>
+          <div>Environment test key successfully returned.</div>
           </>
           // <>
           //   <div><button onClick={handleCreateAccountButton}> Create user in Database </button></div>
@@ -257,8 +257,8 @@ const UserPage = () => {
             <div className="mx-4 my-4">
               <LevelSystemComponent level={user.getLevel()} currentExp={user.getCurrentExp()} expToLevelUp={user.getExpToLevelUp()} />
             </div>
-            <div>Friends List goes here!</div>
-            <Suspense fallback={<div>Loading environment...</div>}>
+            <div>{`The friends list will go here, once it's ready!`}</div>
+            <Suspense fallback={<div>Loading...</div>}>
               {renderAccountManagementButtons()}
             </Suspense>
             </div>

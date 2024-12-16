@@ -24,7 +24,9 @@ const UserProfileComponent = () => {
 	}
 
 	const handleDebugOptionEnable = () => {
-		setShowDebugOptions((showDebugOptions) => showDebugOptions + 1);
+		if (process.env.NEXT_PUBLIC_DEVELOPER_OPTIONS === "true") {
+			setShowDebugOptions((showDebugOptions) => showDebugOptions + 1);
+		}
 	}
 
 	return <>
@@ -35,7 +37,7 @@ const UserProfileComponent = () => {
 		<span className={`ml-4 ${getUsernameFontSize()} ${colors.user.usernameTextColor}`}>{user.getUsername()}</span>
 	</div>
 	<div className="mx-4 my-4"><LevelSystemComponent level={user.getLevel()} currentExp={user.getCurrentExp()} expToLevelUp={user.getExpToLevelUp()} /></div>
-	<div className={`${showDebugOptions >= 1 ? `` : `hidden`}`}>
+	<div className={`${showDebugOptions >= 3 ? `` : `hidden`}`}>
 		<GardenDebugOptions/>
 	</div>
 	</>

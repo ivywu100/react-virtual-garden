@@ -27,6 +27,7 @@ const AuthComponent: React.FC = () => {
     const { store, reloadStore, resetStore } = useStore();
     const { garden, reloadGarden, resetGarden } = useGarden();
     const { account, guestMode, setGuestMode } = useAccount();
+    const allowFirebase = process.env.NEXT_PUBLIC_TEST_ENV_KEY;
 
     const syncAccountObjects = async () => {
         const result = await fetchAccountObjects();
@@ -47,6 +48,10 @@ const AuthComponent: React.FC = () => {
     }
 
     const handleRegister = async () => {
+        if (allowFirebase !== 'this is the local environment') {
+            setMessage(`Error: Firebase registration is disabled at this time. Please use guest mode instead.`);
+            return;
+        }
         setMessage(``);
         try {
             const userCredential = await registerUser(email, password);
@@ -59,6 +64,10 @@ const AuthComponent: React.FC = () => {
     };
 
     const handleLogin = async () => {
+        if (allowFirebase !== 'this is the local environment') {
+            setMessage(`Error: Firebase login is disabled at this time. Please use guest mode instead.`);
+            return;
+        }
         setMessage(``);
         try {
             const userCredential = await loginUser(email, password);
@@ -82,6 +91,10 @@ const AuthComponent: React.FC = () => {
     };
 
     const handleGoogleLogin = async () => {
+        if (allowFirebase !== 'this is the local environment') {
+            setMessage(`Error: Firebase login is disabled at this time. Please use guest mode instead.`);
+            return;
+        }
         setMessage(``);
         try {
             const userCredential = await loginWithGoogle();
@@ -124,9 +137,6 @@ const AuthComponent: React.FC = () => {
                         <button onClick={handleLogout} className="bg-red-500 text-white p-2 rounded w-full hover:bg-red-600">
                             Logout
                         </button>
-                        <button onClick={printCustomClaims} className="mt-4 bg-orange-500 text-white p-2 rounded w-full mb-2 hover:bg-yellow-600">
-                            Print Custom Claims to Console
-                        </button>
                     </div>
                 ) : (
                     <>
@@ -154,7 +164,7 @@ const AuthComponent: React.FC = () => {
                             Login with Google
                         </button>
                         <button onClick={enterGuestMode} className="bg-red-500 text-white p-2 rounded w-full hover:bg-red-600">
-                            {`Guest Mode is currently ${guestMode ? 'on' : 'off'}`}
+                            {guestMode ? 'Guest Mode is currently On' : 'Enter as Guest'}
                         </button>
                     </>
                 )}

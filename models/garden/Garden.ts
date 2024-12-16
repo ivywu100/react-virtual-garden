@@ -88,7 +88,7 @@ export class Garden {
 
 	static generateDefaultNewGarden(): Garden {
 		const randomUuid = uuidv4();
-		return new Garden(randomUuid, "Test User");
+		return new Garden(randomUuid, User.getDefaultUserName());
 	}
 
 	/**

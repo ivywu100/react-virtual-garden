@@ -66,7 +66,8 @@ export const AccountProvider = ({ children }: AccountProviderProps) => {
 
 	useEffect(() => {
 		const updateTestKey = async () => {
-			const testKey = await fetchEnvironmentTestKey();
+			const testKey = process.env.NEXT_PUBLIC_TEST_ENV_KEY || 'error';
+			// const testKey = await fetchEnvironmentTestKey();
 			setEnvironmentTestKey(testKey);
 		};
 
@@ -75,7 +76,7 @@ export const AccountProvider = ({ children }: AccountProviderProps) => {
 
 
     return (
-        <AccountContext.Provider value={{ account: account!, guestMode: guestMode, setGuestMode: setGuestModeHandler, fetchEnvironmentTestKey}}>
+        <AccountContext.Provider value={{ account: account!, guestMode: guestMode, setGuestMode: setGuestModeHandler, environmentTestKey}}>
             {children}
         </AccountContext.Provider>
     );

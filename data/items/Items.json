@@ -961,7 +961,7 @@
                 "level": 0
             },
             {
-                "id": "1-03-10-03-13",
+                "id": "1-03-10-03-10",
                 "name": "magic mango",
                 "icon": "🥭",
                 "type": "InventoryItem",
@@ -983,7 +983,7 @@
                 "level": 0
             },
             {
-                "id": "1-03-10-03-03",
+                "id": "1-03-10-03-13",
                 "name": "Gold magic mango",
                 "icon": "🥭",
                 "type": "InventoryItem",

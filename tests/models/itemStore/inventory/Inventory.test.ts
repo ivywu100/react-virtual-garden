@@ -4,6 +4,7 @@ import { generateNewPlaceholderInventoryItem} from "@/models/items/PlaceholderIt
 import { placeholderItemTemplates } from "@/models/items/templates/models/PlaceholderItemTemplate";
 import { ItemSubtypes } from "@/models/items/ItemTypes";
 import { v4 as uuidv4 } from 'uuid';
+import User from "@/models/user/User";
 
 
 let testInventory: Inventory;
@@ -13,7 +14,7 @@ beforeEach(() => {
 	const item2 = generateNewPlaceholderInventoryItem("banana seed", 2);
 	const item3 = generateNewPlaceholderInventoryItem("coconut seed", 3);
 	const testItemList = new ItemList([item1, item2, item3]);
-	testInventory = new Inventory(uuidv4(), "Test User", 100, testItemList);
+	testInventory = new Inventory(uuidv4(), User.getDefaultUserName(), 100, testItemList);
 });
 
 test('Should Initialize Default Inventory Object', () => {

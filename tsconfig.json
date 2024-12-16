@@ -21,6 +21,6 @@
       "@/*": ["./*"]
     }
   },
-  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts", "uiTests/cypress/support/e2e.js"],
+  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts", "uiTests/cypress/support/e2e.js", "backend/firebase/scripts/toJson.js"],
   "exclude": ["node_modules"]
 }

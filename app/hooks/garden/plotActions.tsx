@@ -13,7 +13,9 @@ import { useUser } from "../contexts/UserContext";
 import { Garden } from "@/models/garden/Garden";
 import { Inventory } from "@/models/itemStore/inventory/Inventory";
 import User from "@/models/user/User";
+import { useDispatch } from "react-redux";
 import { makeApiRequest } from "@/utils/api/api";
+import { setItemQuantity } from "@/store/slices/inventoryItemSlice";
 
 //contains static onclick functions for plot components
 export const usePlotActions = () => {
@@ -21,6 +23,7 @@ export const usePlotActions = () => {
 	const {inventory, updateInventoryForceRefreshKey} = useInventory();
 	const {user} = useUser();
 	const {toggleSelectedItem} = useSelectedItem();
+	const dispatch = useDispatch();
 
 	/**
 	 * Can only be used in an empty plot. Converts an inventoryItem seed into a plant and places it in this plot.
@@ -43,10 +46,16 @@ export const usePlotActions = () => {
 				setGardenMessage(` `);
 				return {success: false, displayIcon: originalItem.itemData.icon};
 			}
-			updateInventoryForceRefreshKey();
+			// updateInventoryForceRefreshKey();
 			if (item.getQuantity() <= 0) {
 				toggleSelectedItem(null);
 			}
+			
+			// Update redux store
+			dispatch(setItemQuantity({ 
+				inventoryItemId: item.getInventoryItemId(), 
+				quantity: item.getQuantity()
+			}));
 
 			saveInventory(inventory);
 			saveGarden(garden);
@@ -107,7 +116,13 @@ export const usePlotActions = () => {
 				setGardenMessage(` `);
 				return {success: false, displayIcon: originalIcon};
 			}
-			updateInventoryForceRefreshKey();
+			
+			// Update redux store
+			dispatch(setItemQuantity({ 
+				inventoryItemId: item.getInventoryItemId(), 
+				quantity: item.getQuantity()
+			}));
+
 			saveInventory(inventory);
 			saveGarden(garden);
 			setGardenMessage(`Placed ${item.itemData.name}.`);
@@ -175,7 +190,13 @@ export const usePlotActions = () => {
 			const pickedItem = harvestItemResponse.payload.pickedItem as PlacedItem;
 			user.updateHarvestHistory(pickedItem);
 			user.addExp(xp);			
-			updateInventoryForceRefreshKey();
+			
+			// Update redux store
+			dispatch(setItemQuantity({ 
+				inventoryItemId: harvestItemResponse.payload.newItem.getInventoryItemId(), 
+				quantity: harvestItemResponse.payload.newItem.getQuantity()
+			}));
+
 			saveInventory(inventory);
 			saveGarden(garden);
 			saveUser(user);
@@ -251,8 +272,14 @@ export const usePlotActions = () => {
 			const pickedItem = pickupItemResponse.payload.pickedItem as PlacedItem;
 			const xp = plot.getExpValue();
 			user.updateHarvestHistory(pickedItem);
-			user.addExp(xp);			
-			updateInventoryForceRefreshKey();
+			user.addExp(xp);		
+			
+			// Update redux store
+			dispatch(setItemQuantity({ 
+				inventoryItemId: pickupItemResponse.payload.newItem.getInventoryItemId(), 
+				quantity: pickupItemResponse.payload.newItem.getQuantity()
+			}));
+			
 			saveInventory(inventory);
 			saveGarden(garden);
 			saveUser(user);

@@ -2,6 +2,7 @@ import colors from "@/components/colors/colors";
 import ItemStoreComponent from "@/components/itemStore/itemStore";
 import { useStore } from "@/app/hooks/contexts/StoreContext";
 import { useEffect, useState } from "react";
+import { getTimeString } from "@/models/utility/Time";
 
 const StoreComponent = ({onInventoryItemClickFunction, forceRefreshKey}: {onInventoryItemClickFunction: (arg: any) => void, forceRefreshKey: number}) => {
 
@@ -63,6 +64,12 @@ const StoreComponent = ({onInventoryItemClickFunction, forceRefreshKey}: {onInve
 		</>
 	}
 
+	const getStoreRestockTimeString = () => {
+		const time = Math.ceil(timeRemaining / 1000);
+		const timeString = getTimeString(time);
+		return timeString;
+	}
+
 	return (
 		<>
 		<div className="w-[80%]" key={forceRefreshKey}>
@@ -71,7 +78,7 @@ const StoreComponent = ({onInventoryItemClickFunction, forceRefreshKey}: {onInve
 			<ItemStoreComponent itemStore={store} onInventoryItemClickFunction={onInventoryItemClickFunction} costMultiplier={store.getBuyMultiplier()} maxHeightPercentage={60}/>
 			<div>
 				<div className="mt-2 text-sm text-gray-600">
-					{canRestock ? 'Store is fully stocked' : `Restock in: ${Math.ceil(timeRemaining / 1000)}s`}
+					{canRestock ? 'Store is fully stocked' : `Restock in: ${getStoreRestockTimeString()}`}
 				</div>
 			</div>
 		</div>

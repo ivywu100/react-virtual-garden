@@ -8,7 +8,7 @@
 				"buyMultiplier": 2,
 				"sellMultiplier": 1,
 				"upgradeMultiplier": 1,
-				"restockInterval": 300000
+				"restockInterval": 3600000
 			},
 			{
 				"id": 1,

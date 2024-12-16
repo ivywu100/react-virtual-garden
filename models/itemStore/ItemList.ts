@@ -5,7 +5,6 @@ import { InventoryTransactionResponse } from "./inventory/InventoryTransactionRe
 import { getItemClassFromSubtype, ItemConstructor } from "../items/utility/classMaps";
 import { InventoryItemTemplate } from "../items/templates/models/InventoryItemTemplate";
 import { ItemTemplate } from "../items/templates/models/ItemTemplate";
-import { Item } from "../items/Item";
 import { PlacedItem } from "../items/placedItems/PlacedItem";
 import { BooleanResponse } from "../utility/BooleanResponse";
 import { v4 as uuidv4 } from 'uuid';
@@ -21,20 +20,9 @@ export class ItemList {
 
 	private sortItems(list: any[]) {
 		list.sort((a, b) => {
-			const indexA = ItemList.fixedOrder.indexOf(a.itemData.subtype);
-			const indexB = ItemList.fixedOrder.indexOf(b.itemData.subtype);
-	
-			// If a subtype is not in the fixedOrder array, it gets a large index number.
-			// This keeps unknown subtypes at the end of the sorted array.
-			const orderA = indexA !== -1 ? indexA : ItemList.fixedOrder.length;
-			const orderB = indexB !== -1 ? indexB : ItemList.fixedOrder.length;
-			
-			if (orderA !== orderB) {
-				return orderA - orderB;
-			}
-
-			//if subtype is the same, sort by name
-			return a.itemData.name.localeCompare(b.itemData.name);
+			const numA = parseInt(a.itemData.id.replace(/-/g, ''), 10);
+			const numB = parseInt(b.itemData.id.replace(/-/g, ''), 10);
+			return numA - numB;
 		});
 	}
 

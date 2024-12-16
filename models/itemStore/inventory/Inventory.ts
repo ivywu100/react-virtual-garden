@@ -6,6 +6,7 @@ import { ItemStore } from "../ItemStore";
 import { ItemTemplate } from "@/models/items/templates/models/ItemTemplate";
 import { v4 as uuidv4 } from 'uuid';
 import { generateNewPlaceholderInventoryItem } from "@/models/items/PlaceholderItems";
+import User from "@/models/user/User";
 
 export interface InventoryEntity {
 	id: string,
@@ -76,7 +77,7 @@ export class Inventory extends ItemStore{
 	
 	static generateDefaultNewInventory(): Inventory {
 		const randomUuid = uuidv4();
-		return new Inventory(randomUuid, "Test User", 100, new ItemList([
+		return new Inventory(randomUuid, User.getDefaultUserName(), 100, new ItemList([
 			generateNewPlaceholderInventoryItem('apple seed', 100)]));
 	}
 
